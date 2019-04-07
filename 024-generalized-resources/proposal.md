@@ -109,45 +109,75 @@ source:
   interval: 10m
 ```
 
-## Interface Definition
-
-### `info`: discover resource type implementation info
-
-Concourse will first invoke `./info` to discover the commands to run for each resource action. The path to this script is relative to the image's working directory, so that it isn't coupled to any particular operating system. By not hardcoding an absolute path we can run resource types on platforms which may not support the idea of a "chroot".
-
-The `info` script will be given the resource's `config` on `stdin` so that it may interpret any fields necessary to formulate the response payload.
+## Interface Types
 
 ```go
-type InfoRequest struct {
-    // User-specified configuration.
-    Config Config `json:"config"`
+// Config represents arbitrary user-specified configuration.
+type Config map[string]interface{}
+
+// ConfigFragment represents additional fields that can be spliced into a Config.
+type ConfigFragment map[string]interface{}
+
+// MetadataField represents a named bit of metadata associated to a ConfigFragment.
+type MetadataField struct {
+  Name  string `json:"name"`
+  Value string `json:"value"`
 }
-```
 
-The `info` script must emit the following response on `stdout`:
+// InfoRequest is the payload written to stdin for the `./info` script.
+type InfoRequest struct {
+  // User-specified configuration.
+  Config Config `json:"config"`
+}
 
-```go
+// InfoResponse is the payload written to stdout from the `./info` script.
 type InfoResponse struct {
-    // The version of the resource interface that this resource type conforms to.
-    InterfaceVersion string `json:"interface_version"`
+  // The version of the resource interface that this resource type conforms to.
+  InterfaceVersion string `json:"interface_version"`
 
-    // An optional icon name to show to the user when viewing the resource.
-    Icon string `json:"icon,omitempty"`
+  // An optional icon name to show to the user when viewing the resource.
+  Icon string `json:"icon,omitempty"`
 
+  // The actions supported by the resource type.
+  Actions struct {
     // Command to run when performing check actions.
-    Check string `json:"check"`
+    Check string `json:"check,omitempty"`
 
     // Command to run when performing get actions.
-    Get string `json:"get"`
+    Get string `json:"get,omitempty"`
 
     // Command to run when performing put actions.
-    Put string `json:"put"`
+    Put string `json:"put,omitempty"`
+
+    // Command to run when performing delete actions.
+    Delete string `json:"delete,omitempty"`
+  } `json:"actions"`
+}
+
+// ActionRequest is the payload written to stdin for each action command.
+type ActionRequest struct {
+  // User-specified configuration.
+  Config Config `json:"config"`
+
+  // Path to a file into which the action must write its response.
+  ResponsePath string `json:"response_path"`
+}
+
+// FragmentEvent is written to the `response_path` by an action for each fragment affected by the action.
+type FragmentEvent struct {
+  // The fragment. May be used as an identifier, unique within the scope of a Config.
+  Fragment ConfigFragment `json:"fragment"`
+
+  // Metadata to associate with the fragment. Shown to the user.
+  Metadata []MetadataField `json:"metadata,omitempty"`
 }
 ```
 
-The value of the `icon` field is a short string corresponding to an icon in Concourse's icon set (currently [Material Design Icons](https://materialdesignicons.com)).
+## `info`: discover resource type implementation info
 
-#### Example
+Concourse will first invoke `./info` to discover the commands to run for each resource action. The path to this script is relative to the image's working directory, so that it isn't coupled to any particular filesystem layout (e.g. UNIX vs. Windows). By not hardcoding an absolute path we can run resource types on platforms which may not support the idea of a "chroot".
+
+### Example `info` request-response
 
 Request sent to `stdin`:
 
@@ -165,37 +195,24 @@ Response written to `stdout`:
 {
   "interface_version": "2.0",
   "icon": "github-circle",
-  "check": "/opt/resource/check",
-  "get": "/opt/resource/get",
-  "put": "/opt/resource/put"
+  "actions": {
+    "check": "/usr/bin/git-resource check",
+    "get": "/usr/bin/git-resource get",
+    "put": "/usr/bin/git-resource put",
+    "delete": "/usr/bin/git-resource delete"
+  }
 }
 ```
 
-### `check`: monitor a config to discover config fragments
+The value of the `icon` field is a short string corresponding to an icon in Concourse's icon set (currently [Material Design Icons](https://materialdesignicons.com)).
 
-The `check` command specified by `info` will be invoked with the following request piped to `stdin`:
+## Resource Actions
 
-```go
-type CheckRequest struct {
-  // User-specified configuration.
-  Config Config `json:"config"`
+All resource actions fit a common interface: they are given a **config** and a file path for them to write their response. The command will be run in a working directory that either contains **bits** or is empty, for the action to fetch the bits into (i.e. the `get` action).
 
-  // Path to a file into which the action must write its response.
-  ResponsePath string `json:"response_path"`
-}
-```
+The action's **command** will be invoked with the **bits** as the working directory. The path specified by `response_path` may be relative to the working directory, e.g. `"../response/response.json"`. This is done so that Concourse doesn't need to know the absolute path.
 
-The `check` command must write a stream of JSON objects ("events") containing **config fragments** and any associated **metadata** to the specified `response_path`.
-
-```go
-type CheckEvent struct {
-  Event    string `json:"event"`
-  Config   Config `json:"config"`
-  Metadata []Metadata `json:"metadata,omitempty"`
-}
-```
-
-#### Example
+### Example **action** request/response
 
 Request sent to `stdin`:
 
@@ -204,16 +221,16 @@ Request sent to `stdin`:
   "config": {
     "uri": "https://github.com/concourse/concourse",
     "branch": "master"
-  }
+  },
+  "response_path": "../response/events.json"
 }
 ```
 
-Response written to `stdout`:
+Response written to `../response/events.json`:
 
 ```json
 {
-  "event": "discovered",
-  "config": {"ref": "e4be0b367d7bd34580f4842dd09e7b59b6097b25"},
+  "fragment": {"ref": "e4be0b367d7bd34580f4842dd09e7b59b6097b25"},
   "metadata": [
     {
       "name": "message",
@@ -222,8 +239,7 @@ Response written to `stdout`:
   ]
 }
 {
-  "event": "discovered",
-  "config": {"ref": "5a052ba6438d754f73252283c6b6429f2a74dbff"},
+  "fragment": {"ref": "5a052ba6438d754f73252283c6b6429f2a74dbff"},
   "metadata": [
     {
       "name": "message",
@@ -232,8 +248,7 @@ Response written to `stdout`:
   ]
 }
 {
-  "event": "discovered",
-  "config": {"ref": "2e256c3cb4b077f6fa3c465dd082fa74df8fab0a"},
+  "fragment": {"ref": "2e256c3cb4b077f6fa3c465dd082fa74df8fab0a"},
   "metadata": [
     {
       "name": "message",
@@ -243,9 +258,13 @@ Response written to `stdout`:
 }
 ```
 
-### `get`: fetch bits for a spliced config
+### `check`: monitor a config to discover config fragments
 
-### `put`: use bits to perform side-effects corresponding to config fragments
+### `get`: fetch bits corresponding to a spliced config
+
+### `put`: create-or-update config fragments
+
+### `delete`: use bits to delete config fragments
 
 ## Artifact resources with v2
 
