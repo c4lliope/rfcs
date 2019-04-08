@@ -163,8 +163,8 @@ type ActionRequest struct {
   ResponsePath string `json:"response_path"`
 }
 
-// FragmentEvent is written to the `response_path` by an action for each fragment affected by the action.
-type FragmentEvent struct {
+// ActionResponse is written to the `response_path` by an action for each fragment affected by the action. Multiple respones may be written as a JSON stream.
+type ActionResponse struct {
   // The fragment. May be used as an identifier, unique within the scope of a Config.
   Fragment ConfigFragment `json:"fragment"`
 
@@ -175,7 +175,7 @@ type FragmentEvent struct {
 
 ## `info`: discover resource type implementation info
 
-Concourse will first invoke `./info` to discover the commands to run for each resource action. The path to this script is relative to the image's working directory, so that it isn't coupled to any particular filesystem layout (e.g. UNIX vs. Windows). By not hardcoding an absolute path we can run resource types on platforms which may not support the idea of a "chroot".
+Prior to running any action,  will first invoke `./info` to discover the commands to run for each resource action. The path to this script may be relative to the image's working directory.
 
 ### Example `info` request-response
 
@@ -208,9 +208,27 @@ The value of the `icon` field is a short string corresponding to an icon in Conc
 
 ## Resource Actions
 
-All resource actions fit a common interface: they are given a **config** and a file path for them to write their response. The command will be run in a working directory that either contains **bits** or is empty, for the action to fetch the bits into (i.e. the `get` action).
+All resource actions fit a common interface: they are given a **config** and a file path for them to write their response.
 
 The action's **command** will be invoked with the **bits** as the working directory. The path specified by `response_path` may be relative to the working directory, e.g. `"../response/response.json"`. This is done so that Concourse doesn't need to know the absolute path.
+
+How the **bits** are used and what each **event** means varies based on the action.
+
+### `check`: monitor a config to discover config fragments
+
+* **bits** is initially empty - the resource may place arbitrary data there to cache state between checks
+
+### `get`: fetch bits corresponding to a spliced config
+
+* **bits** is initially empty, and the action must fetch into it
+
+### `put`: create-or-update config fragments
+
+* **bits** contains arbitrary user-provided data
+
+### `delete`: use bits to delete config fragments
+
+* **bits** contains arbitrary user-provided data
 
 ### Example **action** request/response
 
@@ -257,14 +275,6 @@ Response written to `../response/events.json`:
   ]
 }
 ```
-
-### `check`: monitor a config to discover config fragments
-
-### `get`: fetch bits corresponding to a spliced config
-
-### `put`: create-or-update config fragments
-
-### `delete`: use bits to delete config fragments
 
 ## Artifact resources with v2
 
