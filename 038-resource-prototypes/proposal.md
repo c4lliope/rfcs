@@ -108,9 +108,8 @@ A `MessageResponse` must be emitted for all versions that have been created/upda
 When a `put` step is used in a build plan, each version emitted will be
 recorded as an output of the build.
 
-When executing a `put` step for a resource implemented by a prototype,
-Concourse will no longer automatically execute a `get` step. Instead, a `get`
-field must be explicitly added to the step, specifying a name to fetch it as:
+A `get` field may be explicitly added to the step, specifying a name to fetch
+the last-emitted version as:
 
 ```yaml
 jobs:
@@ -121,6 +120,9 @@ jobs:
   - put: my-resource
     get: some-name
 ```
+
+This replaces the "implicit `get` after `put`" behavior from old-style resources.
+
 
 ### `delete`: idempotently destroy resource versions
 
