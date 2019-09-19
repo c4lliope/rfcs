@@ -146,6 +146,17 @@ jobs:
     params: {regexp: concourse-[0-9]+\.[0-9]+\.[0-9]+-rc.[0-9]+.tgz}
 ```
 
+## Migration Path
+
+Concourse will support `resource_types:` and `prototypes:` side-by-side.
+
+Resources backed by a resource type will keep all of today's behavior for
+backwards-compatibility. We don't want to force a big-bang migration of every
+Concourse user's pipelines.
+
+Resources backed by a prototype will gain all the behavior described in this
+proposal.
+
 ## Open Questions
 
 n/a
