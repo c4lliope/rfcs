@@ -94,7 +94,8 @@ jobs:
     file: some-resource/ci/unit.yml
 ```
 
-Versions fetched by a `get` step will be cached on each worker, just as before.
+Versions fetched by a `get` step will be cached on each worker.
+
 
 ### `put`: idempotently create resource versions
 
