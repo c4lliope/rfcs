@@ -46,6 +46,8 @@ and no longer be available.
 The `check` handler can use the **bits** directory to cache state between runs.
 On the first run, the directory will be empty.
 
+There is no `check` step syntax.
+
 ### `get`: fetch a version of a resource
 
 The `get` handler will be invoked with an object specifying the version to
