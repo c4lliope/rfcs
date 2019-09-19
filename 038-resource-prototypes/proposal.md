@@ -143,7 +143,7 @@ jobs:
 - name: prune-release-candidates
   plan:
   - delete: concourse-rc
-    params: {pattern: concourse-[0-9]+\.[0-9]+\.[0-9]+-rc.[0-9]+.tgz}
+    params: {regexp: concourse-[0-9]+\.[0-9]+\.[0-9]+-rc.[0-9]+.tgz}
 ```
 
 ## Open Questions
