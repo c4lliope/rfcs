@@ -52,9 +52,16 @@ The `get` handler will always be invoked with an object including the fields of
 a version to fetch (emitted by `check`).
 
 The `get` handler must fetch the resource into a directory named `resource`
-under the **bits** directory. When a `get` handler is invoked by a `get` step
-in a build plan, this output will be mapped to the resource's name in the
-pipeline:
+under the **bits** directory.
+
+A `MessageResponse` must be emitted for all versions that have been fetched
+into the bits directory. Each version will be recorded as an input to the
+build.
+
+### build plan usage
+
+When a `get` handler is invoked by a `get` step in a build plan, this output
+will be mapped to the resource's name in the pipeline.
 
 ```yaml
 resources:
@@ -86,10 +93,6 @@ jobs:
   - task: unit
     file: some-resource/ci/unit.yml
 ```
-
-A `MessageResponse` must be emitted for all versions that have been fetched
-into the bits directory. Each version will be recorded as an input to the
-build.
 
 ### `put`: idempotently create resource versions
 
