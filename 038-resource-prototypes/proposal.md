@@ -122,7 +122,7 @@ jobs:
 ```
 
 This replaces the "implicit `get` after `put`" behavior, which will remain for
-resources provided by `resource_types:`.
+resources provided by `resource_types:` for backwards-compatibility.
 
 
 ### `delete`: idempotently destroy resource versions
