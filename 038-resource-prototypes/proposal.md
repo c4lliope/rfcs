@@ -39,7 +39,9 @@ after it in chronological order.
 If the specified version is no longer present, the `check` handler must instead
 emit all available versions, as if the version was not specified. Concourse
 will detect this scenario by noticing that the first version emitted does not
-match the requested version.
+match the requested version. The given version, along with any other versions
+that are "gone" from the new set of versions, will be marked as "deleted" and
+no longer be available.
 
 The `check` handler can use the **bits** directory to cache state between runs.
 On the first run, the directory will be empty.
