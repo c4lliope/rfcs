@@ -78,7 +78,7 @@ jobs:
 - name: get-and-test
   plan:
   - run: get
-    type: git # type of 'some-resource'
+    type: git
     output_mapping: {resource: some-resource}
   - task: unit
     file: some-resource/ci/unit.yml
