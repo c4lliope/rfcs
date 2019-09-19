@@ -115,10 +115,6 @@ jobs:
     get: some-name
 ```
 
-This change is backwards-compatible, and users will gradually migrate to this
-behavior as they migrate from `resource_types:` to `prototypes:` in their
-pipelines.
-
 ### `delete`: idempotently destroy resource versions
 
 The `delete` handler will be invoked with user-provided configuration and
