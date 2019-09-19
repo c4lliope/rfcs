@@ -157,7 +157,8 @@ Concourse user's pipelines.
 Resources backed by a prototype will gain all the behavior described in this
 proposal. Pipeline authors are encouraged to transition from resource types to prototypes, which they can do gradually.
 
-There is no EOL date specified for resource types support.
+There is no EOL date specified for resource types support. It would likely be
+on the order of years.
 
 ## Open Questions
 
