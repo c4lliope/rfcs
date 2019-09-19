@@ -138,6 +138,13 @@ A `MessageResponse` must be emitted for all versions that have been destroyed.
 When a `delete` step is used in a build plan, each version emitted will be
 marked as "deleted" and no longer be available for use in other builds.
 
+```yaml
+jobs:
+- name: prune-release-candidates
+  plan:
+  - delete: concourse-rc
+    params: {pattern: concourse-(.*)-rc.\d+.tgz}
+```
 
 ## Open Questions
 
