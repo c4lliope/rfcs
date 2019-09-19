@@ -101,8 +101,6 @@ arbitrary bits.
 
 A `MessageResponse` must be emitted for all versions that have been created/updated. Each version will be recorded as an output of the build.
 
-#### `get` after `put` is now opt-in
-
 When executing a `put` step for a resource implemented by a prototype,
 Concourse will no longer automatically execute a `get` step. Instead, a `get`
 field must be explicitly added to the step, specifying a name to map the
