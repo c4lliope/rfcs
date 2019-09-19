@@ -76,8 +76,8 @@ jobs:
     file: some-resource/ci/unit.yml
 ```
 
-Assuming the latest commit of `some-resource` is `abcdef`, this would be akin
-to the following build plan:
+Assuming the latest commit of `some-resource` is `abcdef`, this would be
+similar to the following build plan:
 
 ```yaml
 jobs:
