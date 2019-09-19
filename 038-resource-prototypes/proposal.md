@@ -76,8 +76,8 @@ jobs:
     file: some-resource/ci/unit.yml
 ```
 
-Assuming the latest version detected is `abcdef`, this would correspond to the
-following build plan:
+Assuming the latest version detected is `abcdef`, this would be equivalent to
+the following build plan:
 
 ```yaml
 jobs:
