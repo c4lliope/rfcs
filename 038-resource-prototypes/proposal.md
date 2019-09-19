@@ -121,7 +121,8 @@ jobs:
     get: some-name
 ```
 
-This replaces the "implicit `get` after `put`" behavior from old-style resources.
+This replaces the "implicit `get` after `put`" behavior, which will remain for
+resources provided by `resource_types:`.
 
 
 ### `delete`: idempotently destroy resource versions
