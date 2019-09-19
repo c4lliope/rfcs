@@ -48,7 +48,7 @@ On the first run, the directory will be empty.
 
 ### `get`: fetch a version of a resource
 
-The `get` handler will always be invoked with an object specifying which
+The `get` handler will always be invoked with an object including fields of a
 version to fetch. It is given an empty **bits** directory in which to fetch the
 data.
 
