@@ -59,6 +59,8 @@ pipeline:
 ```yaml
 plan:
 - get: some-resource
+- task: unit
+  file: some-resource/ci/unit.yml
 ```
 
 A `MessageResponse` must be emitted for all versions that have been fetched
