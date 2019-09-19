@@ -27,9 +27,8 @@ Their behavior is described as follows.
 ### `check`: discover new versions of a resource
 
 Initially, the `check` handler will be invoked with an object containing only
-the fields configured by the resource's `source:` in the pipeline.
-
-A `MessageResponse` must be emitted for *all* versions available in the source,
+the fields configured by the resource's `source:` in the pipeline. A
+`MessageResponse` must be emitted for *all* versions available in the source,
 in chronological order.
 
 Subsequent `check` calls will be run with a clone of the configuration object
