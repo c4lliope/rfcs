@@ -94,9 +94,8 @@ jobs:
     file: some-resource/ci/unit.yml
 ```
 
-The bits fetched by a `get` step will be cached so that the same version does
-not have to be fetched repeatedly. The semantics of this caching is subject to
-the worker backend.
+The bits fetched by a `get` step may be cached so that the same version does
+not have to be fetched repeatedly.
 
 
 ### `put`: idempotently create resource versions
