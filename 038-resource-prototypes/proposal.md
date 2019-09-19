@@ -134,6 +134,10 @@ The `delete` handler will be invoked with user-provided configuration and
 arbitrary bits.
 
 A `MessageResponse` must be emitted for all versions that have been destroyed.
+
+When a `delete` step is used in a build plan, each version emitted will be
+recorded as deleted by the build.
+
 These versions will be marked "deleted" and no longer be available for use in
 other builds.
 
