@@ -103,8 +103,7 @@ A `MessageResponse` must be emitted for all versions that have been created/upda
 
 When executing a `put` step for a resource implemented by a prototype,
 Concourse will no longer automatically execute a `get` step. Instead, a `get`
-field must be explicitly added to the step, specifying a name to map the
-fetched resource to:
+field must be explicitly added to the step, specifying a name to fetch it as:
 
 ```yaml
 jobs:
