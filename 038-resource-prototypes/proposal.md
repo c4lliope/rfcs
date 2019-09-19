@@ -88,6 +88,8 @@ The `delete` handler will be invoked with user-provided configuration and
 arbitrary bits.
 
 A `MessageResponse` must be emitted for all versions that have been destroyed.
+These versions will be marked "deleted" and no longer be available for use in
+other builds.
 
 
 ## Open Questions
