@@ -155,7 +155,7 @@ backwards-compatibility. We don't want to force a big-bang migration of every
 Concourse user's pipelines.
 
 Resources backed by a prototype will gain all the behavior described in this
-proposal.
+proposal. Pipeline authors are encouraged to transition from resource types to prototypes, which they can do gradually.
 
 ## Open Questions
 
