@@ -51,8 +51,8 @@ On the first run, the directory will be empty.
 The `get` handler will be invoked with an object specifying the version to
 fetch.
 
-The `get` handler must fetch the resource into a directory named `resource`
-under the **bits** directory.
+The `get` handler must fetch the resource into an output named `resource` under
+the **bits** directory.
 
 A `MessageResponse` must be emitted for all versions that have been fetched
 into the bits directory. Each version will be recorded as an input to the
