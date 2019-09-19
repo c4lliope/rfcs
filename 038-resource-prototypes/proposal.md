@@ -57,10 +57,37 @@ in a build plan, this output will be mapped to the resource's name in the
 pipeline:
 
 ```yaml
-plan:
-- get: some-resource
-- task: unit
-  file: some-resource/ci/unit.yml
+resources:
+- name: some-resource
+  type: git
+  source:
+    uri: https://example.com/some-repo
+
+jobs:
+- name: get-and-test
+  plan:
+  - get: some-resource
+  - task: unit
+    file: some-resource/ci/unit.yml
+```
+
+This roughly corresponds to the following build plan:
+
+```yaml
+resources:
+- name: some-resource
+  type: git
+  source:
+    uri: https://example.com/some-repo
+
+jobs:
+- name: get-and-test
+  plan:
+  - run: get
+    type: git # type of 'some-resource'
+    output_mapping: {resource: some-resource}
+  - task: unit
+    file: some-resource/ci/unit.yml
 ```
 
 A `MessageResponse` must be emitted for all versions that have been fetched
