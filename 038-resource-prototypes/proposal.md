@@ -58,7 +58,7 @@ A `MessageResponse` must be emitted for all versions that have been fetched
 into the bits directory. Each version will be recorded as an input to the
 build.
 
-### build plan usage
+#### build plan usage
 
 When a `get` handler is invoked by a `get` step in a build plan, this output
 will be mapped to the resource's name in the pipeline.
