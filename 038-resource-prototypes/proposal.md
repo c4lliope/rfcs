@@ -48,8 +48,8 @@ On the first run, the directory will be empty.
 
 ### `get`: fetch a version of a resource
 
-The `get` handler will always be invoked with an object including the fields of
-a version to fetch (emitted by `check`).
+The `get` handler will be invoked with an object specifying the version to
+fetch.
 
 The `get` handler must fetch the resource into a directory named `resource`
 under the **bits** directory.
@@ -60,7 +60,7 @@ build.
 
 #### build plan usage
 
-When a `get` handler is invoked by a `get` step in a build plan, this output
+When a `get` handler is invoked by a `get` step in a build plan, the output
 will be mapped to the resource's name in the pipeline.
 
 ```yaml
