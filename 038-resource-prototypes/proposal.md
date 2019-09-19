@@ -148,7 +148,7 @@ jobs:
 
 ## Migration Path
 
-Concourse will support `resource_types:` and `prototypes:` side-by-side.
+Concourse pipelines will support `resource_types:` and `prototypes:` side-by-side.
 
 Resources backed by a resource type will keep all of today's behavior for
 backwards-compatibility. We don't want to force a big-bang migration of every
