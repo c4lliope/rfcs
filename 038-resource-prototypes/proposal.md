@@ -85,10 +85,11 @@ jobs:
   plan:
   - run: get
     type: git
-    output_mapping: {resource: some-resource}
     params:
       uri: https://example.com/some-repo
       ref: abcdef
+    output_mapping:
+      resource: some-resource
   - task: unit
     file: some-resource/ci/unit.yml
 ```
