@@ -80,6 +80,9 @@ jobs:
   - run: get
     type: git
     output_mapping: {resource: some-resource}
+    params:
+      uri: https://example.com/some-repo
+      ref: # whatever the latest available version is
   - task: unit
     file: some-resource/ci/unit.yml
 ```
