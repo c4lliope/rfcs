@@ -59,7 +59,7 @@ into the bits directory. Each version will be recorded as an input to the
 build.
 
 When a `get` handler is invoked by a `get` step in a build plan, the output
-will be mapped to the resource's name in the pipeline.
+will be mapped to the resource's name in the pipeline:
 
 ```yaml
 resources:
