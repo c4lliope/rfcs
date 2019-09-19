@@ -73,8 +73,8 @@ fetched resource to:
 jobs:
 - name: push-pull-resource
   plan:
-  # push to 'my-resource', and then fetch the last version object emitted as
-  # 'some-name'
+  # push to 'my-resource', and then fetch the last emitted version object as #
+  'some-name'
   - put: my-resource
     get: some-name
 ```
