@@ -76,7 +76,8 @@ jobs:
     file: some-resource/ci/unit.yml
 ```
 
-This roughly corresponds to the following build plan:
+Assuming the latest version detected is `abcdef`, this would correspond to the
+following build plan:
 
 ```yaml
 jobs:
@@ -87,7 +88,7 @@ jobs:
     output_mapping: {resource: some-resource}
     params:
       uri: https://example.com/some-repo
-      ref: # whatever the latest available version is
+      ref: abcdef
   - task: unit
     file: some-resource/ci/unit.yml
 ```
