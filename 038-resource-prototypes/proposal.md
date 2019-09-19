@@ -94,7 +94,7 @@ jobs:
     file: some-resource/ci/unit.yml
 ```
 
-Versions fetched by a `get` step will be cached so that the same version does
+The bits fetched by a `get` step will be cached so that the same version does
 not have to be fetched repeatedly.
 
 
