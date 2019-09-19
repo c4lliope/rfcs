@@ -74,12 +74,6 @@ jobs:
 This roughly corresponds to the following build plan:
 
 ```yaml
-resources:
-- name: some-resource
-  type: git
-  source:
-    uri: https://example.com/some-repo
-
 jobs:
 - name: get-and-test
   plan:
