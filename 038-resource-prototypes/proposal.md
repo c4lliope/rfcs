@@ -49,8 +49,10 @@ On the first run, the directory will be empty.
 ### `get`: fetch a version of a resource
 
 The `get` handler will always be invoked with an object including the fields of
-a version to fetch (emitted by `check`). It is given an empty **bits**
-directory in which to fetch the data.
+a version to fetch (emitted by `check`).
+
+The `get` handler must fetch the resource into a directory named `resource`.
+This output will be mapped to the resource's name in the pipeline.
 
 A `MessageResponse` must be emitted for all versions that have been fetched
 into the bits directory. Each version will be recorded as an input to the
