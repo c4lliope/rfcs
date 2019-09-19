@@ -103,7 +103,10 @@ not have to be fetched repeatedly.
 The `put` handler will be invoked with user-provided configuration and
 arbitrary bits.
 
-A `MessageResponse` must be emitted for all versions that have been created/updated. Each version will be recorded as an output of the build.
+A `MessageResponse` must be emitted for all versions that have been created/updated.
+
+When a `put` step is used in a build plan, each version emitted will be
+recorded as an output of the build.
 
 When executing a `put` step for a resource implemented by a prototype,
 Concourse will no longer automatically execute a `get` step. Instead, a `get`
