@@ -46,7 +46,8 @@ and no longer be available.
 The `check` handler can use the **bits** directory to cache state between runs.
 On the first run, the directory will be empty.
 
-There is no `check` step syntax.
+There is no `check` step syntax. Concourse will `check` every configured
+resource and maintain a version history, which feeds into downstream jobs.
 
 ### `get`: fetch a version of a resource
 
