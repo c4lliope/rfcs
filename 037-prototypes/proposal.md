@@ -177,7 +177,7 @@ type MessageRequest struct {
   // Configuration for handling TLS.
   TLS TLSConfig `json:"tls,omitempty"`
 
-  // Path to a file into which the message handler must write its response.
+  // Path to a file into which the message handler must write its MessageResponses.
   ResponsePath string `json:"response_path"`
 }
 
