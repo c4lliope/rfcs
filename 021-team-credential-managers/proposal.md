@@ -1,8 +1,7 @@
 # Summary
 
-Move credential management configuration to the team configuration level, and
-allow configuring multiple credential managers for each team.
-
+Allow multiple credential managers to be configured, at multiple levels:
+globally, per-project, and per-pipeline.
 
 # Motivation
 
