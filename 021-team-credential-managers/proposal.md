@@ -66,8 +66,8 @@ This proposal introduces a new kind of configuration: `var_sources`.
 
 This name "var source" is chosen to build on the existing terminology around
 `((vars))` and to directly relate them to one another. Calling them "var
-sources" instead of "credential managers" so that they can be used for things
-that aren't necessarily credentials.
+sources" instead of "credential managers" also allows them to be used for
+things that aren't necessarily credentials.
 
 `var_sources` may be specified at a pipeline-level, like so:
 
