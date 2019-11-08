@@ -134,7 +134,7 @@ fetched credential, if it exists. For example, the Vault credential manager
 will return the value of the `value` field if present. This is useful for
 simple single-value credentials.
 
-## Path lookup rules
+## Credential manager secret lookup rules
 
 Pipeline-level credential managers differ from globally-configured credential
 managers in one key way: they do not have to be limited to a particular path
