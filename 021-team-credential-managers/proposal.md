@@ -79,6 +79,9 @@ var_sources:
     uri: https://vault.example.com
     # ... vault-specific config including auth/etc ...
 - # ...
+
+jobs:
+- # ...
 ```
 
 In the future we may want to be able to configure `var_sources` at other levels
