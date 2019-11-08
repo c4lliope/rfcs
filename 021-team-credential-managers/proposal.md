@@ -118,11 +118,6 @@ fetched.
 If `SECRET_PATH` does not begin with a slash (`/`), the secret path may be
 queried under various paths determined by the var source and its configuration.
 
-The proposed syntax for var lookup, now including a name, is
-**`((some-name:some/path.some-field))`**. In this query, `some-name` will
-correspond to a name under `var_sources`, and the credential `some/path` will
-be fetched, with the `some-field` field read from it.
-
 ## Path lookup rules
 
 Now that credential managers can be configured "locally" we can relax the path
