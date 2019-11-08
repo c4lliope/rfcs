@@ -107,32 +107,30 @@ The full `((var))` syntax will be
 
 ### `VAR_SOURCE_NAME`
 
-The `VAR_SOURCE_NAME` segment specifies which named entry under `var_sources`
-to use for the credential lookup. If omitted (along with the `:`), the globally
-configured credential manager is used.
+The optional `VAR_SOURCE_NAME` segment specifies which named entry under
+`var_sources` to use for the credential lookup. If omitted (along with the
+`:`), the globally configured credential manager is used.
 
 ### `SECRET_PATH`
 
-The `SECRET_PATH` specifies the secret to be fetched. This can either be a
-single word (`foo`) or a path (`foo/bar` or `/foo/bar`), depending on what
-lookup schemes are supported by the credential manager. For example, Vault and
-CredHub have path semantics whereas Kubernetes and Azure KeyVault only support
-simple names.
+The required `SECRET_PATH` segment specifies the secret to be fetched. This can
+either be a single word (`foo`) or a path (`foo/bar` or `/foo/bar`), depending
+on what lookup schemes are supported by the credential manager. For example,
+Vault and CredHub have path semantics whereas Kubernetes and Azure KeyVault
+only support simple names.
 
 For credential managers which support path-based lookup, a `SECRET_PATH`
 without a leading `/` may be queried relative to a predefined set of path
 prefixes. This is how the Vault credential manager currently works; `foo` will
 be queried under `/concourse/(team name)/(pipeline name)/foo`.
 
-If `SECRET_FIELD` is omitted, the credential manager implementation may opt to
-choose a default field. For example, the Vault implementation will read the
-`value` field if present. This is useful for simple single-value secrets.
+### `SECRET_FIELD`
 
-If `SECRET_PATH` begins with a slash (`/`), the exact specified path will be
-fetched.
-
-If `SECRET_PATH` does not begin with a slash (`/`), the secret path may be
-queried under various paths determined by the var source and its configuration.
+The optional `SECRET_FIELD` specifies a field on the fetched secret to read. If
+omitted, the credential manager may choose to read a 'default field' from the
+fetched credential, if it exists. For example, the Vault credential manager
+will return the value of the `value` field if present. This is useful for
+simple single-value credentials.
 
 ## Path lookup rules
 
