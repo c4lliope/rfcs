@@ -112,7 +112,7 @@ The optional `VAR_SOURCE_NAME` segment specifies which named entry under
 `var_sources` to use for the credential lookup. If omitted (along with the
 `:`), the globally configured credential manager is used.
 
-A `VAR_SOURCE_NAME` must me a valid identifier per concourse/rfcs#(TODO).
+A `VAR_SOURCE_NAME` must be a valid identifier per concourse/rfcs#(TODO).
 
 ### `SECRET_PATH`
 
