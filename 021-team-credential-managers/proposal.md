@@ -62,15 +62,6 @@ full-fledged credential manager that can be used for many more things.
 
 # Proposal
 
-Key goals:
-
-* Support for multiple credential managers configured at the same time.
-
-* Allow for credential managers to be defined "locally" in a pipeline and, in
-  the future, in a [project](https://github.com/concourse/rfcs/pull/32).
-
-* Allow locally-defined credential managers to forego the path restriction.
-
 This proposal introduces a new kind configuration: `var_sources`. This name is
 chosen to build on the existing terminology around `((vars))` and to directly
 relate them to one another. Calling them "var sources" instead of "credential
