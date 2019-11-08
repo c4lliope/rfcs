@@ -77,7 +77,7 @@ relate them to one another. Calling them "var sources" instead of "credential
 managers" will also let us reason about the idea more generically so that
 non-credential-y things can be used as a source for `((vars))` as well.
 
-`var_sources` looks like this:
+`var_sources` may be specified at a pipeline-level, like so:
 
 ```yaml
 var_sources:
@@ -88,6 +88,8 @@ var_sources:
     # ... vault-specific config including auth/etc ...
 - # ...
 ```
+
+In the future, `var_sources` may also be specified at the project-level (concourse/rfcs#32).
 
 Each var source has a `name` which must be a valid identifier per
 concourse/rfcs#(TODO). This is used to explicitly reference the source from
