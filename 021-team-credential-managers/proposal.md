@@ -92,8 +92,6 @@ var_sources:
 In the future we may want to be able to configure `var_sources` at other levels
 (e.g. [project-level](https://github.com/concourse/rfcs/pull/32)).
 
-In the future, `var_sources` may also be specified at the project-level (concourse/rfcs#32).
-
 Each var source has a `name` which must be a valid identifier per
 concourse/rfcs#(TODO). This is used to explicitly reference the source from
 `((vars))` syntax so that there is no ambiguity. See
