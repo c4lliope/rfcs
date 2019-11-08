@@ -103,8 +103,9 @@ A var source's `config` is a "black box" to Concourse and is passed verbatim to
 the credential manager. This configuration should include any credentials
 necessary for authenticating with the credential manager.
 
-A var source's `config` may use `((vars))` to obtain its own credentials. This
-can use a different of the `var_source` or a global credential manager.
+A var source's `config` may use `((vars))` to obtain its own credentials,
+either by using a different var source or by using the global credential
+manager.
 
 ## `((var))` syntax
 
