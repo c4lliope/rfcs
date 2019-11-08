@@ -137,7 +137,7 @@ simple single-value credentials.
 
 Pipeline-level credential managers differ from globally-configured credential
 managers in one key way: they do not have to be limited to a particular path
-scheme, and are permitted to look up credentials anywhere.
+scheme.
 
 Now that credential managers can be configured "locally" we can relax the path
 lookup rules as it's no longer necessary to isolate a team's var lookup to a
