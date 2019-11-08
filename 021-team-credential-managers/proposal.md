@@ -71,8 +71,7 @@ Key goals:
 
 * Allow locally-defined credential managers to forego the path restriction.
 
-This proposal introduces a new toplevel configuration to pipelines:
-`var_sources`. This name is chosen to build on the existing terminology around
+This proposal introduces a new kind configuration: `var_sources`. This name is chosen to build on the existing terminology around
 `((vars))` and to directly relate them to one another. Calling them "var
 sources" instead of "credential managers" will also let us reason about the
 idea more generically so that non-credential-y things can be used as a source
