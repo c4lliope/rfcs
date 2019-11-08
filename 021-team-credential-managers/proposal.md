@@ -115,9 +115,8 @@ configured credential manager is used.
 
 The `SECRET_PATH` specifies the secret to be fetched. This can either be a
 single word (`foo`) or a path (`foo/bar` or `/foo/bar`), depending on what
-lookup schemes are supported by the credential manager.
-
-For example, Vault and CredHub have path semantics whereas Kubernetes and Azure
+lookup schemes are supported by the credential manager. For example, Vault and
+CredHub have path semantics whereas Kubernetes and Azure
 KeyVault only support simple names.
 
 Credential managers which support path-based lookup may implement 
