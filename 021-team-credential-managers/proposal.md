@@ -123,7 +123,7 @@ For credential managers which support path-based lookup, a `SECRET_PATH`
 without a leading `/` may be queried relative to a predefined set of path
 prefixes. This is how the Vault credential manager currently works; `foo` will
 be queried under `/concourse/(team name)/(pipeline name)/foo`. See [Path lookup
-rules](#path-lookup-rules)).
+rules](#path-lookup-rules).
 
 ### `SECRET_FIELD`
 
