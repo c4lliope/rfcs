@@ -105,9 +105,11 @@ The `((var))` syntax will be extended to support querying a specific
 The full `((var))` syntax will be
 `((VAR_SOURCE_NAME:SECRET_PATH.SECRET_FIELD))`.
 
-If `VAR_SOURCE_NAME` is omitted, the globally configured credential manager is
-used.
+The `VAR_SOURCE_NAME` segment specifies which entry under `var_sources` to use
+for the credential lookup. If omitted (including the `:`), the globally
+configured credential manager is used.
 
+The `SECRET_FIELD` 
 If `SECRET_FIELD` is omitted, the credential manager implementation may opt to
 choose a default field. For example, the Vault implementation will read the
 `value` field if present. This is useful for simple single-value secrets.
