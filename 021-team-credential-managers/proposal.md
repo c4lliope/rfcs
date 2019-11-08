@@ -124,9 +124,6 @@ without a leading `/` may be queried relative to a predefined set of path
 prefixes. This is how the Vault credential manager currently works; `foo` will
 be queried under `/concourse/(team name)/(pipeline name)/foo`.
 
-should treat absolute paths
-as if they are requesting an exact credential.
-
 If `SECRET_FIELD` is omitted, the credential manager implementation may opt to
 choose a default field. For example, the Vault implementation will read the
 `value` field if present. This is useful for simple single-value secrets.
