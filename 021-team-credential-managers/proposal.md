@@ -105,8 +105,8 @@ The `((var))` syntax will be extended to support querying a specific
 The full `((var))` syntax will be
 `((VAR_SOURCE_NAME:SECRET_PATH.SECRET_FIELD))`.
 
-The `VAR_SOURCE_NAME` segment specifies which entry under `var_sources` to use
-for the credential lookup. If omitted (including the `:`), the globally
+The `VAR_SOURCE_NAME` segment specifies which named entry under `var_sources`
+to use for the credential lookup. If omitted (along with the `:`), the globally
 configured credential manager is used.
 
 The `SECRET_FIELD` 
