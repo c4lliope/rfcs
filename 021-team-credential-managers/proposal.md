@@ -82,7 +82,6 @@ var_sources:
 
 resources: # ...
 
-
 jobs: # ...
 ```
 
