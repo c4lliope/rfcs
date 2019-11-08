@@ -91,13 +91,14 @@ var_sources:
 ```
 
 Each var source has a `name`. This is used to explicitly reference the source
-from `((vars))` syntax so that there is no ambiguity.
+from `((vars))` syntax so that there is no ambiguity. See [`((var))`
+syntax](#var-syntax).
 
 A var source's `type` names one of the supported credential managers (e.g.
 `vault`, `credhub`, `kubernetes`), which is responsible for interpreting
 `config`.
 
-## How var sources interpret `((var))` syntax
+## `((var))` syntax
 
 The `((var))` syntax was introduced a long while back and was never formally
 specified or documented. This RFC proposes a change to it so now's a good time
