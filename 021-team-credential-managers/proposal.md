@@ -104,7 +104,7 @@ specified or documented. This RFC proposes a change to it so now's a good time
 to lay it all out.
 
 The full `((var))` syntax will be
-`((VAR_SOURCE_NAME:SECRET_PATH.SECRET_FIELD))`.
+**`((VAR_SOURCE_NAME:SECRET_PATH.SECRET_FIELD))`**.
 
 ### `VAR_SOURCE_NAME`
 
