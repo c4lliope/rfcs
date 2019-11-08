@@ -97,7 +97,7 @@ A var source's `type` names one of the supported credential managers (e.g.
 `vault`, `credhub`, `kubernetes`), which is responsible for interpreting
 `config`.
 
-## How to interpret `((var))` syntax
+## How credential managers interpret `((var))` syntax
 
 The `((var))` syntax was introduced a long while back and was never formally
 specified or documented. This RFC proposes a change to it so now's a good time
