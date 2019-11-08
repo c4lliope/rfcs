@@ -97,10 +97,11 @@ A var source's `type` names one of the supported credential managers (e.g.
 `vault`, `credhub`, `kubernetes`), which is responsible for interpreting
 `config`.
 
-## Var syntax
+## How to interpret `((var))` syntax
 
-The `((var))` syntax will be extended to support querying a specific
-`var_source` by name.
+The `((var))` syntax was introduced a long while back and was never formally
+specified or documented. This RFC proposes a change to it so now's a good time
+to lay it all out.
 
 The full `((var))` syntax will be
 `((VAR_SOURCE_NAME:SECRET_PATH.SECRET_FIELD))`.
