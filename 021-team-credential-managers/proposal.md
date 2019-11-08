@@ -89,6 +89,10 @@ var_sources:
 - # ...
 ```
 
+There may be other levels, i.e.
+[project-level](https://github.com/concourse/rfcs/pull/32), where `var_sources`
+would be useful to specify.
+
 In the future, `var_sources` may also be specified at the project-level (concourse/rfcs#32).
 
 Each var source has a `name` which must be a valid identifier per
