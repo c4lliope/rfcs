@@ -93,14 +93,35 @@ var_sources:
 Each var source has a `name`. This is used to explicitly reference the source
 from `((vars))` syntax so that there is no ambiguity.
 
+A var source's `type` names one of the supported credential managers (e.g.
+`vault`, `credhub`, `kubernetes`), which is responsible for interpreting
+`config`.
+
+## Var syntax
+
+The `((var))` syntax will be extended to support querying a specific
+`var_source` by name.
+
+The full `((var))` syntax will be
+`((VAR_SOURCE_NAME:SECRET_PATH.SECRET_FIELD))`.
+
+If `VAR_SOURCE_NAME` is omitted, the globally configured credential manager is
+used.
+
+If `SECRET_FIELD` is omitted, the credential manager implementation may opt to
+choose a default field. For example, the Vault implementation will read the
+`value` field if present. This is useful for simple single-value secrets.
+
+If `SECRET_PATH` begins with a slash (`/`), the exact specified path will be
+fetched.
+
+If `SECRET_PATH` does not begin with a slash (`/`), the secret path may be
+queried under various paths determined by the var source and its configuration.
+
 The proposed syntax for var lookup, now including a name, is
 **`((some-name:some/path.some-field))`**. In this query, `some-name` will
 correspond to a name under `var_sources`, and the credential `some/path` will
 be fetched, with the `some-field` field read from it.
-
-A var source's `type` names one of the supported credential managers (e.g.
-`vault`, `credhub`, `kubernetes`), which is responsible for interpreting
-`config`.
 
 ## Path lookup rules
 
@@ -108,76 +129,19 @@ Now that credential managers can be configured "locally" we can relax the path
 lookup rules as it's no longer necessary to isolate a team's var lookup to a
 path that's distinct from other teams.
 
-For ease of use and backwar
+This means that credentials can be shared between teams, and credential manager
+specific settings such as ACLs may be utilized to securely share access to
+common credentials.
 
-  By moving credential manager config to each team we can instead leverage the
-  credential manager's access control to determine how credentials are shared
-  across teams (e.g. Vault policies).
+Credential managers may still choose to have default path lookup schemes for
+convenience. This RFC makes no judgment call on this because the utility of
+this will vary between credential managers.
 
-  By eliminating the path enforcement you can now refer to different secret
-  backend mount points.
 
-  By configuring at the team level, each team can point to their own KeyVault
-  or configure their own access control.
-
-  By allowing teams to configure multiple credential managers, all credential
-  managers can be tried in order when looking up a given credential.
-
-The first step is to extend the team config file set by `fly set-team --config`
-to support configuring credential managers. Something like this:
-
-```yaml
-roles: # ...
-
-credential_managers:
-- type: iam
-  config:
-    access_key: blahblah
-    secret_key: blahblah
-- type: vault
-  config:
-    url: https://vault.example.com:8200
-    ca_cert: |
-      -----BEGIN CERTIFICATE-----
-      ...
-    client_token: blahblahbla
-```
-
-Then, any time we're resolving a `((var))` the `web` node would resolve the var
-using each configured credential manager, in order. Distinct fields can be
-accessed like `((foo.bar))`, and nested credential paths can be accessed like
-`((foo/bar/baz))`.
-
-In this case, team's Vault auth config would be associated to a policy which
-determines which credentials the team can access. This way shared credentials
-can be shared without duplicating the credential, and private credentials can
-be kept private.
-
-All credential managers would be modified to remove the automatic team/pipeline
-variable name scoping. They would instead be looked up starting from the root
-level.
+## Maintaining auth
 
 
 # Open Questions
-
-* Is there a need for globally-configured and team-configured credential
-  managers to coexist, or can we switch to entirely team-configured (as is the
-  initial goal)?
-
-* Concourse will now be responsible for safely storing access to each and every
-  credential manager, which increases risk. Is it enough to mitigate this by
-  requiring that database encryption be configured?
-
-* Will anyone miss the automatic credential scoping assumptions? Is there value
-  in automatically looking under `/(team)/(pipeline)` for `((foo))`?
-
-* Would a default key prefix make sense? e.g. `/concourse`? (Maybe this is just
-  up to the discretion of the credential manager?)
-
-* Supporting IAM/STS token acquisition is one of the motivators for this
-  proposal, but I think we need a concrete example implementation to really
-  understand if this proposal is a good fit. The above example configures an
-  access key and secret manually instead of using EC2 IAM role.
 
 * When and how often do we authenticate with each credential manager? If you're
   using Vault with a periodic token, something will have to continuously renew
@@ -192,15 +156,6 @@ level.
 
   Should we just not support periodic tokens?
 
-* Should we work credential caching into this proposal?
-
-* How should credential manager authentication errors be surfaced?
-
-* Is there a need for configuring a path prefix (e.g. the default `/concourse`
-  for Vault)? I've left that out for now assuming we can just get rid of it.
-
-
 # Answered Questions
-
 
 # New Implications
