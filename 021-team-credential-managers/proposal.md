@@ -105,15 +105,22 @@ The `((var))` syntax will be extended to support querying a specific
 The full `((var))` syntax will be
 `((VAR_SOURCE_NAME:SECRET_PATH.SECRET_FIELD))`.
 
+### `VAR_SOURCE_NAME`
+
 The `VAR_SOURCE_NAME` segment specifies which named entry under `var_sources`
 to use for the credential lookup. If omitted (along with the `:`), the globally
 configured credential manager is used.
 
+### `SECRET_PATH`
+
 The `SECRET_PATH` specifies the secret to be fetched. This can either be a
 single word (`foo`) or a path (`foo/bar` or `/foo/bar`), depending on what
-lookup schemes are supported by the credential manager. For example, Vault and
-CredHub have path semantics whereas Kubernetes and Azure KeyVault only support
-simple names
+lookup schemes are supported by the credential manager.
+
+For example, Vault and CredHub have path semantics whereas Kubernetes and Azure
+KeyVault only support simple names.
+
+Credential managers which support path-based lookup may implement 
 
 If `SECRET_FIELD` is omitted, the credential manager implementation may opt to
 choose a default field. For example, the Vault implementation will read the
