@@ -95,9 +95,17 @@ concourse/rfcs#(TODO). This is used to explicitly reference the source from
 `((vars))` syntax so that there is no ambiguity. See
 [`VAR_SOURCE_NAME`](#VAR_SOURCE_NAME).
 
-A var source's `type` names one of the supported credential managers (e.g.
-`vault`, `credhub`, `kubernetes`), which is responsible for interpreting
+A var source's `type` specifies one of the supported credential managers, e.g.
+`vault`, `credhub`, `kubernetes`. is responsible for interpreting
 `config`.
+
+A var source's `config` is a "black box" to Concourse and is passed verbatim to
+the credential manager. This configuration should include any credentials
+necessary for authenticating with the credential manager.
+
+A var source's `config` may use `((vars))` to obtain its own credentials. This
+can refer to another of the named `var_source` entries, or refer to a global
+credential manager.
 
 ## `((var))` syntax
 
