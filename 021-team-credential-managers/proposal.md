@@ -109,7 +109,12 @@ The `VAR_SOURCE_NAME` segment specifies which named entry under `var_sources`
 to use for the credential lookup. If omitted (along with the `:`), the globally
 configured credential manager is used.
 
-The `SECRET_FIELD` 
+The `SECRET_PATH` specifies the secret to be fetched. This can either be a
+single word (`foo`) or a path (`foo/bar` or `/foo/bar`), depending on what
+lookup schemes are supported by the credential manager. For example, Vault and
+CredHub have path semantics whereas Kubernetes and Azure KeyVault only support
+simple names
+
 If `SECRET_FIELD` is omitted, the credential manager implementation may opt to
 choose a default field. For example, the Vault implementation will read the
 `value` field if present. This is useful for simple single-value secrets.
