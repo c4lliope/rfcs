@@ -89,9 +89,8 @@ var_sources:
 - # ...
 ```
 
-There may be other levels, i.e.
-[project-level](https://github.com/concourse/rfcs/pull/32), where `var_sources`
-would be useful to specify.
+In the future we may want to be able to configure `var_sources` at other levels
+(e.g. [project-level](https://github.com/concourse/rfcs/pull/32)).
 
 In the future, `var_sources` may also be specified at the project-level (concourse/rfcs#32).
 
