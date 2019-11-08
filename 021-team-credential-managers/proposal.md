@@ -106,8 +106,8 @@ necessary for authenticating with the credential manager.
 A var source's `config` may use `((vars))` to obtain its own credentials,
 either by using a different var source or by using the globally configured
 credential manager. These may also be provided statically at
-pipeline-configuration time. Whatever the case may be, the config will be
-encrypted when stored in the database.
+pipeline-configuration time. Either way, the config will be encrypted when
+stored in the database.
 
 ## `((var))` syntax
 
