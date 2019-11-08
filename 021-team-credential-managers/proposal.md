@@ -91,7 +91,8 @@ var_sources:
 ```
 
 Each var source has a `name`. This is used to explicitly reference the source
-from `((vars))` syntax so that there is no ambiguity. See [`VAR_SOURCE_NAME`](#VAR_SOURCE_NAME).
+from `((vars))` syntax so that there is no ambiguity. See
+[`VAR_SOURCE_NAME`](#VAR_SOURCE_NAME).
 
 A var source's `type` names one of the supported credential managers (e.g.
 `vault`, `credhub`, `kubernetes`), which is responsible for interpreting
