@@ -62,11 +62,13 @@ full-fledged credential manager that can be used for many more things.
 
 # Proposal
 
-This proposal introduces a new kind of configuration: `var_sources`. This name
-is chosen to build on the existing terminology around `((vars))` and to
-directly relate them to one another. Calling them "var sources" instead of
-"credential managers" will also let us reason about the idea more generically
-so that non-credential-y things can be used as a source for `((vars))` as well.
+This proposal introduces a new kind of configuration: `var_sources`.
+
+This name "var source" is chosen to build on the existing terminology around
+`((vars))` and to directly relate them to one another. Calling them "var
+sources" instead of "credential managers" will also let us reason about the
+idea more generically so that non-credential-y things can be used as a source
+for `((vars))` as well.
 
 `var_sources` may be specified at a pipeline-level, like so:
 
