@@ -1,8 +1,8 @@
 # Summary
 
-Introduces `var_sources`, a way to configure multiple named credential
-managers, initially at the pipeline-level but potentially at the system-level
-and project-level (concourse/rfcs#32).
+Introduces `((var))` sources, a mechanism for providing values for `((vars))`
+at runtime, which can be used for secure credential management or more general
+dynamic parameterization.
 
 # Motivation
 
@@ -63,18 +63,14 @@ full-fledged credential manager that can be used for many more things.
 
 # Proposal
 
-This proposal introduces a new kind of configuration: `var_sources`.
-
-This name "var source" is chosen to build on the existing terminology around
-`((vars))` and to directly relate them to one another. Calling them "var
-sources" instead of "credential managers" also allows them to be used for
-things that aren't necessarily credentials.
+This proposal introduces a new way to leverage [Prototypes][prototypes-rfc] as
+a new first-class pipeline concept: `((var))` sources.
 
 `var_sources` may be specified at a pipeline-level, like so:
 
 ```yaml
 var_sources:
-- name: vault
+- name: my-vault
   type: vault
   config:
     uri: https://vault.example.com
@@ -90,7 +86,12 @@ identifier][valid-identifier-rfc]. This is used to explicitly reference the
 source from `((vars))` syntax so that there is no ambiguity. See
 [`VAR_SOURCE_NAME`](#VAR_SOURCE_NAME).
 
-A var source's `type` specifies one of the supported credential managers, e.g.
+A var source's `type` specifies the prototype to use for the var source's
+implementation, just like with resources.
+
+* `read` - to fetch a var's value
+
+, e.g.
 `vault`, `credhub`, `kubernetes`. is responsible for interpreting
 `config`.
 
