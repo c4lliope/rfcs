@@ -140,13 +140,18 @@ And the respone might look something like this:
 This response would then be loaded into the build's local var source, available
 as `((.:time))`.
 
+
 ## Open Questions
 
-* Could this be related to how we approach [concourse/concourse#738](https://github.com/concourse/concourse/issues/783)? :thinking:
+* n/a
+
 
 ## Answered Questions
 
-* n/a
+* > Could this be related to how we approach [concourse/concourse#738](https://github.com/concourse/concourse/issues/783)? :thinking:
+
+  This was tempting, and I even wrote up and threw away an entire revision to this proposal for this, but ultimately I think it's best that Concourse sticks to its current ethos of being the "dot connector" and not the "dot" - inputs should come from an external source of truth, not arbitrary values given in the UI.
+
 
 ## New Implications
 
