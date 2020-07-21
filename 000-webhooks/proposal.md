@@ -45,6 +45,61 @@ there's a common resource used in many pipelines.
 
 # Proposal
 
+## Key decisions
+
+TRUST THESE PARTS THEREAFTER HRETOFORE QED QUID GOPRO
+
+* Hooks SHOULD NOT be configured "through" a resource - their lifecycle
+  has to be independent, to the point where they can be configured
+  project-wide.
+  * Reasoning: don't want one-hook-per-resource, and want webhooks to work for
+    var sources too.
+
+* Hook IDs are scoped within the prototype. i.e., a resource's hook ID will
+  only be considered when the same prototype accepts hooks.
+  * This solves the problem of hook ID compatibility/ambiguity.
+  * This means you'll have one webhook configured per prototype.
+  * A given webservice will typically correspond to only a handful of
+    prototypes, sometimes only one - so maybe this is OK?
+    * e.g. GitHub: `git`, `github`
+
+* A prototype which supports hooks will only handle hooks for things
+  (resources, var sources) which use the same prototype.
+  * Reasoning: The Hook ID JSON object itself isn't enough to determine compatibility or
+    relevance across all resource configs; what if it's just 'url:', and two
+    different prototypes interpret it in different ways? (e.g. RSS or
+    commits)
+  * Arguably they should be checked anyway, but... this doesn't seem guaranteed
+    enough. Maybe think about this more either way.
+  * In any case, 'type-level' hook propagation seems like a reasonable level of
+    granularity. It's not per-resource, but it's also not cluster-wide with no
+    namespacing/typing.
+
+* Webhook API endpoint has to be asynchronous and cannot involve worker
+  interaction.
+  * Slack webhook timeout is 3 seconds.
+  * GitHub is 10 seconds.
+  * BitBucket is 10 seconds.
+  * GitLab doesn't specify an amount, but has similar restrictions.
+    * "Your endpoint should send its HTTP response as fast as possible. If you wait too long, GitLab may decide the hook failed and retry it."
+  * Container Registry PubSub recommendation is "no more than 30 seconds".
+  * Docker Hub timeout is undocumented. (Surprise.)
+
+## Decision points
+
+* Slack events API has a challenge flow. Do we need to allow prototypes to
+  respond to events?
+  * https://api.slack.com/events/url_verification
+
+* Slack events must be handled in *3 seconds*. Ouch.
+  * We might have to just respond 200 OK immediately, but that eliminates the
+    possibility for handling the challenge.
+  
+  * ...eh, this may just be a limitation to note. for Slack you can't just
+    point straight at Concourse, you need an app that can handle the challenge.
+
+* GitHub: 10 seconds. But doesn't require challenge, so that's OK.
+
 Prototypes can return a `url` value from the `info` request. This URL will be
 exposed in the UI, but more importantly, used to identify which resources to
 check from a webhook.
@@ -60,9 +115,11 @@ check from a webhook.
   // YYY: let's not overload this.
   "url": "https://github.com/vito/booklit"
 }
+```
 
-ZZZ: maybe hooks should be discovered from a prototype instead, and the user
-just generates a URL for it. the `hook` call can return a hook identifier.
+ZZZ: maybe hooks should be discovered from a resource's prototype instead,
+and the user just generates a URL for it. the `hook` call can return a hook
+identifier.
 
 AAA: ...no, this shouldn't stem from a resource if we want org-wide hooks.
 prototypes should only specify some sort of hook identifier, and hook
