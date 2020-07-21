@@ -15,9 +15,10 @@ requests. This can lead to rate limiting, or worse, your CI/CD stack DDoSing
 your own internal services.
 
 To reduce polling pressure it is typical to configure webhooks, by
-configuring a `webhook_token` on a resource and either setting `check_every`
-or configuring `--resource-with-webhook-checking-interval` cluster-wide. This
-token value is then given to the service, as part of a per-resource URL.
+configuring a `webhook_token` on a resource and either setting a higher
+`check_every` or configuring `--resource-with-webhook-checking-interval`
+cluster-wide. This token value is then given to the service, as part of a
+per-resource URL.
 
 This is a tedious operation and has severe limitations, as some external
 services (e.g. GitHub) have a limit on how many webhooks can be configured on
@@ -67,10 +68,48 @@ AAA: ...no, this shouldn't stem from a resource if we want org-wide hooks.
 prototypes should only specify some sort of hook identifier, and hook
 endpoints should be managed by users to prevent abuse of a public endpoint.
 this way they can compose together, rather than competing `git` prototypes
-both maintaining hook interpretation.
+both maintaining hook interpretation. (edit: though, let's be honest, that
+wouldn't be a huge deal. putting it in the same prototype would probably be a
+non-issue.)
 
-BBB: maybe hook identifier should specify event type? how much info should be parsed from webhook payload? could help to know what we can safely assume. let's survey various services. maybe `hook` is called with something like {"events":"push","source":{"url":"https://github.com/vito/booklit","branch":"master"}}
+BBB: maybe hook identifier should specify event type? how much info should be
+parsed from webhook payload? could help to know what we can safely assume.
+let's survey various services. maybe `hook` is called with something like
+{"event":"push","source":{"url":"https://github.com/vito/booklit","branch":"master"}}
 
+CCC: ...nah, i think handling specific events is a bit too complicated.
+better to think of it as 'hey, something happened with this thing, just
+re-check everything'. MUCH simpler. global resources should prevent this from
+leading to a storm of `check` calls anyway. it's premature optimization.
+
+DDD: 
+
+* org-wide hooks would be dope.
+* don't handle specific event types; just let it be a general 'change' indicator and let Concourse figure out what to do
+* don't create them from resources; need it to be configurable project-wide (or team-wide)
+* they can be implemented in the same prototype, but don't have to be, since it's decoupled from resources
+* prototypes implement a `id` call that returns the hook source (identifier) corresponding to the source
+  * is this too ambiguous?
+  * what if someone does a `git` prototype that supports a repo construct but also supports just 'url: ...' with no branch as a resource?
+  * how would it know to include 'branch: master', since the hooks will always be for specifically 'branch: master'?
+  * oh. i guess it should just return both objects.
+  * or the resource should just make a distinction between them.
+  * id should be a canonical identifier, i.e. not just subset of source config
+* id is saved for each resource config
+  * can be shown in the UI
+* prototypes implement a `hook` call that parses a hook payload and returns hook sources
+* when hook id is received, each resource config
+
+EEE: ...should this be implemented by the same prototype that implements the
+resource/var source/whatever, and only check resources of the same prototype?
+  * would that be finnicky with types having versions and stuff?
+  * it might not be safe to assume JSON contents are enough to know the things to call, since we can't really know the type.
+  * this would resolve compatibility issues too. tbh, processing a hook payload is stupid easy.
+  * only downside: can't implement hooker externally. but... who cares? contribute to the main prototype.
+    * need to make sure one prototype can handle multiple hook types
+
+
+TODO: one prototype needs to be able to handle multiple services
 The process for this is as follows.
 
 Webhooks are configured in a project:
@@ -78,8 +117,13 @@ Webhooks are configured in a project:
 ```yaml
 webhooks:
 - name: concourse
-  type: github # 'github' prototype
+  type: git
   token: im-a-token
+
+  # FFF: THIS MOSTLY MAKES SENSE, just: how does it know to expect a github payload vs a bitbucket one, or how does it detect the difference?
+  config:
+    service: github
+
 
 plan:
 - ...

@@ -1,0 +1,40 @@
+{
+    "events": [
+        {
+            "event": "tag_updated",
+            "subscription_id": "12345",
+            "state_hash": "somehashhere",
+            "datetime": "2019-11-27 12: 00: 00",
+            "event_data": {
+                "repository": "somenamespace/somerepo",
+                "tag": "sometag",
+                "manifest": {
+                    "digest": "sha256:abcdefg",
+                    "media_type": "media-type-of-manifest-here"
+                }
+            },
+            "authorization": {
+                "username": "authuser",
+                "password": "theauthorizationcodehere"
+            }
+        }
+    ]
+}
+
+// goal:
+{
+    "repository": "somenamespace/somerepo"
+}
+{
+    "repository": "somenamespace/somerepo",
+    "tag": "sometag"
+}
+// repository: somenamespace/somerepo
+// tag: sometag
+
+// XXX: kinda cool note here...
+{"repository":"foo"} supports check, and returns...
+{"repository":"foo","tag":"bar","digest":"sha256:..."} which supports get, as opposed to...
+{"repository":"foo","tag":"bar"} which does not support get, but
+{"repository":"foo","tag":"bar"} does support check, which returns...
+{"repository":"foo","tag":"bar","digest":"sha256:..."} which supports get.
