@@ -4,6 +4,13 @@
 
 Reproducible + Ephemeral = Concourse
 
+* Concourse lets you sleep at night by preventing you from taking shortcuts during the day.
+  * CI and automation has historically been a bit of a cludge.
+
+* Concourse is designed to be a CI system that lets you sleep easy.
+  * It does this by making it hard to take shortcuts that will blow up in your face,
+  * and by making it easy to recover from a disastrous CI meltdown.
+
 * The result of using Concourse should be a declarative configuration which acts as a "source of truth" describing your project's entire workflow.
   * When your Concourse cluster fails, this configuration should be transferrable to a new cluster.
   * When a better Concourse implementation arrives, you should be able to switch with minimal overhead.
