@@ -2,14 +2,16 @@
 
 A Concourse pipeline plan is a namespace for resources, tasks, and pipelines.
 Pipeline plans are bootstrapped from a single resource definition
-and a build plan which executes when new versions of the resource are found.
+and a build phase which executes when new versions of the resource are found.
 Pipeline plans bridge the gap between small-scale and large-scale CI workflows,
 helping to smoothen Concourse's learning curve.
 
 # Motivation
 
-* Smoothen the learning curve. Right now the jump from `fly execute` to `fly set-pipeline` is pretty steep.
-  Pipeline plans can be a user's first introduction to build plans, which lead nicely into jobs and pipelines.
+* Smoothen the learning curve. Right now the jump
+  from `fly execute` to `fly set-pipeline` is pretty steep.
+  Pipeline plans can be a user's first introduction to build phases,
+  which lead nicely into jobs and pipelines.
 * Enable small-scale plans to have a simple Travis/Circle CI single-build workflow,
   without needing pipelines at all.
   This is a scenario where Concourse pipelines can be seen as overkill.
@@ -142,16 +144,15 @@ resource should error upon configuration.
 
 Plans define tasks under the `tasks/` directory.
 
-Tasks will automatically propagate to every build plan
+Tasks will automatically propagate to every build phase
 executed within the plan via the plan's config directory artifact.
 
 The `task` step will be modified to load the task config
 corresponding to the task name from the plan artifact by default.
 
-For example, the following build plan...:
+For example, the following build phase...:
 
 ```yaml
-name: plan-name
 plan:
 - task: foo
 ```
@@ -159,7 +160,6 @@ plan:
 ...will be interpreted as this:
 
 ```yaml
-name: plan-name
 plan:
 - task: foo
   file: plan-name/tasks/foo.yml
@@ -219,7 +219,7 @@ preventing pipeline names from colliding
 with other pipelines within the same team.
 This allows pipeline names to be short and simple.
 
-Plans have many builds corresponding to executions of the plan's own build plan.
+Plans have many builds corresponding to executions of the plan's own build phase.
 These should be visible somewhere prominent in the UI.
 For simple plans which don't use pipelines
 this is where a user would expect to see their CI output.
@@ -229,10 +229,12 @@ which may come from things like pipeline config validation errors.
 
 All builds within the plan, including builds of jobs within the plan,
 are associated to a specific version of the plan.
-This version determines the configuration to be loaded and provided to the build when executing the build plan.
-This information could also be visible somewhere in the UI (perhaps an automatic `get` step
-at the beginning of the build) so that users know what exact version was used
-for tasks, resources, and the build plan.
+This version determines the configuration
+to be loaded and provided to the build when executing the build phase.
+This information could also be visible somewhere in the UI
+(perhaps an automatic `get` step at the beginning of the build)
+so that users know what exact version was used
+for tasks, resources, and the build phase.
 This may also be useful for build re-triggering.
 
 
@@ -257,7 +259,7 @@ Here's an example - say I have a small single-repo plan
 and I want to keep all my CI config in the same repo.
 Example: [Booklit](https://github.com/vito/booklit).
 
-If we provided the whole repo to the build plan,
+If we provided the whole repo to the build phase,
 I could have the following `plan.yml`:
 
 ```yaml
@@ -449,12 +451,12 @@ Right now the gap between tasks and pipelines is quite large.
 Before, the learning curve went like this:
 
 1. Tasks/Resources (`fly execute`, `image_resource`)
-1. Jobs/Build Plans/Pipelines (`fly set-pipeline`)
+1. Jobs/Build Phases/Pipelines (`fly set-pipeline`)
 
 Now it can go like this:
 
 1. Resources (`fly set-plan`)
-1. Build Plans + Resources (`plan:`, `get:`/`put:`)
+1. Build Phases + Resources (`plan:`, `get:`/`put:`)
 1. Tasks (`task:`, `fly execute`)
 1. Jobs/Pipelines (`set_pipeline` step/`fly set-pipeline`)
 
